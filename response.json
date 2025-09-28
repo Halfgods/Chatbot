@@ -1,0 +1,32 @@
+{
+  "session_id": "1914d1fb-d1b7-4fc7-8c30-391575f5c2c5",
+  "cibil_summary": {
+    "cibil_score": 813,
+    "status": "Excellent",
+    "credit_metrics": {
+      "monthly_emi": "₹29,350",
+      "debt_to_income_pct": "48%",
+      "credit_utilization_pct": "0%",
+      "credit_types": 3,
+      "estimated_credit_limit": "₹150,000"
+    },
+    "key_advice": "No immediate adverse advice. DTI is high (48%) but the CIBIL score is excellent, suggesting timely payments."
+  },
+  "tax_summary": {
+    "annual_income": 954699,
+    "monthly_income": 65000,
+    "current_deductions_claimed": 120000,
+    "recommended_tax_regime": "New Regime",
+    "annual_tax_savings_with_new_regime": 27529,
+    "tax_burden_comparison": {
+      "old_regime_tax": 72217,
+      "new_regime_tax": 44689
+    }
+  },
+  "financial_context": {
+    "key_income_sources": "Primary Income (Salary - TCS Ltd, ₹60,000/month recurring), Investment Returns (FD Interest - ICICI, ₹2,500/quarter recurring), Freelance Income (Web Design, Consulting, App Development), and an Annual Bonus.",
+    "monthly_debt_obligations_detail": "₹29,350 (from CIBIL report). Detailed breakdown of recurring monthly payments includes: Home Loan EMI (₹15,000), Car Loan EMI (₹13,000), Life Insurance, Health Insurance, ELSS SIP, and PPF Contribution.",
+    "tax_recommendation_reasoning": "The New Tax Regime is recommended because it saves ₹27,529 (38.1%) compared to the Old Regime. This saving is due to the lower tax slab rates, which outweigh the value of the traditional deductions (80C, 80D, etc.) currently being claimed.",
+    "dti_note": "Monthly EMI (₹29,350) represents 45.15% of the steady monthly income (₹65,000). The CIBIL DTI is 48% (likely calculated against gross income), which is high but acceptable given the score of 813."
+  }
+}
