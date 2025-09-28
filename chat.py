@@ -16,52 +16,12 @@ JSON_FILE = 'response.json'
 @st.cache_data
 def load_rag_data(file_path):
     """
-    Load financial RAG data from response.json file and create searchable knowledge base
+    Load RAG data from response.json file - keeps your existing data as-is
     """
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
-        
-        # Create a knowledge base from your financial data
-        knowledge_base = {}
-        
-        if 'cibil_summary' in data:
-            cibil = data['cibil_summary']
-            # CIBIL related queries
-            knowledge_base['what is my cibil score'] = f"Your CIBIL score is {cibil['cibil_score']} which is {cibil['status']}."
-            knowledge_base['my credit score'] = f"Your credit score is {cibil['cibil_score']} ({cibil['status']})."
-            knowledge_base['what is my emi'] = f"Your monthly EMI is {cibil['credit_metrics']['monthly_emi']}."
-            knowledge_base['my monthly emi'] = f"Your monthly EMI is {cibil['credit_metrics']['monthly_emi']}."
-            knowledge_base['debt to income ratio'] = f"Your debt-to-income ratio is {cibil['credit_metrics']['debt_to_income_pct']}."
-            knowledge_base['credit utilization'] = f"Your credit utilization is {cibil['credit_metrics']['credit_utilization_pct']}."
-            knowledge_base['credit limit'] = f"Your estimated credit limit is {cibil['credit_metrics']['estimated_credit_limit']}."
-            knowledge_base['credit advice'] = cibil['key_advice']
-        
-        if 'tax_summary' in data:
-            tax = data['tax_summary']
-            # Tax related queries
-            knowledge_base['my annual income'] = f"Your annual income is ₹{tax['annual_income']:,}."
-            knowledge_base['my monthly income'] = f"Your monthly income is ₹{tax['monthly_income']:,}."
-            knowledge_base['tax regime recommendation'] = f"Recommended tax regime: {tax['recommended_tax_regime']}."
-            knowledge_base['tax savings'] = f"Annual tax savings with new regime: ₹{tax['annual_tax_savings_with_new_regime']:,}."
-            knowledge_base['old vs new regime'] = f"Old regime tax: ₹{tax['tax_burden_comparison']['old_regime_tax']:,}, New regime tax: ₹{tax['tax_burden_comparison']['new_regime_tax']:,}."
-            knowledge_base['current deductions'] = f"Current deductions claimed: ₹{tax['current_deductions_claimed']:,}."
-        
-        if 'financial_context' in data:
-            context = data['financial_context']
-            # Financial context queries
-            knowledge_base['income sources'] = context['key_income_sources']
-            knowledge_base['my income sources'] = context['key_income_sources']
-            knowledge_base['debt obligations'] = context['monthly_debt_obligations_detail']
-            knowledge_base['monthly debt'] = context['monthly_debt_obligations_detail']
-            knowledge_base['tax recommendation reason'] = context['tax_recommendation_reasoning']
-            knowledge_base['dti details'] = context['dti_note']
-        
-        # Add session info
-        if 'session_id' in data:
-            knowledge_base['session id'] = f"Your session ID is {data['session_id']}."
-        
-        return knowledge_base
+        return data
             
     except FileNotFoundError:
         st.warning(f"Warning: RAG file '{file_path}' not found. Chatbot will use only Gemini API.")
@@ -506,43 +466,29 @@ def main():
             response = ""
             user_query_clean = prompt.strip().lower()
 
-            # --- Enhanced RAG Logic with Partial Matching ---
-            rag_hit = False
-            if rag_data:
-                # First try exact match
-                if user_query_clean in rag_data:
-                    response = rag_data[user_query_clean]
-                    response += "\n\n*📊 (Source: Your Financial Data)*"
-                    rag_hit = True
-                else:
-                    # Try partial matching for better user experience
-                    for key in rag_data.keys():
-                        if any(word in user_query_clean for word in key.split() if len(word) > 3):
-                            response = rag_data[key]
-                            response += "\n\n*📊 (Source: Your Financial Data)*"
-                            rag_hit = True
-                            break
+            # --- Simple RAG Logic - No smart matching ---
+            response = ""
             
-            if rag_hit:
-                # Display RAG response immediately
+            # RAG: Just load your data and let Gemini handle everything
+            if rag_data:
+                # Pass RAG data to Gemini for context
                 with st.chat_message("assistant", avatar="🤖"):
-                    st.markdown(response)
-            else:
-                # Fallback to Gemini API with financial context
-                with st.chat_message("assistant", avatar="🤖"):
-                    with st.spinner("🤔 Analyzing with AI..."):
-                        # Add financial context to the prompt for better AI responses
+                    with st.spinner("Thinking..."):
+                        # Include RAG data as context for Gemini
                         enhanced_prompt = f"""
                         User question: {prompt}
                         
-                        Context: This user has financial data available including:
-                        - CIBIL score and credit information
-                        - Tax planning details
-                        - Income and debt information
+                        Available user data: {json.dumps(rag_data, indent=2)}
                         
-                        Please provide a helpful response. If the question is about their specific financial data and you don't have access to it, suggest they ask specific questions like "what is my CIBIL score" or "my monthly income".
+                        Please answer the user's question using the provided data when relevant.
                         """
                         response = st.session_state.chatbot.generate_response(enhanced_prompt)
+                    st.markdown(response)
+            else:
+                # No RAG data - just use Gemini
+                with st.chat_message("assistant", avatar="🤖"):
+                    with st.spinner("Thinking..."):
+                        response = st.session_state.chatbot.generate_response(prompt)
                     st.markdown(response)
 
             st.session_state.messages.append({"role": "assistant", "content": response})
