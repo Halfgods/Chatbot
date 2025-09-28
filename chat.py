@@ -492,7 +492,7 @@ class Chatbot:
         try:
             api_key = os.getenv('GEMINI_API_KEY')
             if not api_key:
-                raise Exception("GEMINI_API_KEY environment variable not found. Check your .env file and installation.")
+                raise Exception("GEMINI_API_KEY environment variable not found. Check your .env file.")
                 
             genai.configure(api_key=api_key)
             self.model = genai.GenerativeModel('gemini-2.5-flash')
@@ -509,26 +509,30 @@ class Chatbot:
             raise Exception(f"Error generating response: {str(e)}")
 
 def main():
-    # Center everything in a wrapper
-    st.markdown('<div class="chat-wrapper">', unsafe_allow_html=True)
+    # --- RAG Data Loading ---
+    # Load and cache RAG data
+    rag_data = load_rag_data(JSON_FILE) 
     
-    # Premium Header
+    # Header
     st.markdown("""
     <div class="chat-header">
         <div class="chat-title">
-            <span>🤖</span> AI Chat Assistant
+            🤖 AI Chat Assistant
         </div>
-        <div class="chat-subtitle">Powered by advanced AI • Chat with intelligence</div>
+        <div class="chat-subtitle">Powered by Gemini AI + RAG • Ask me anything</div>
     </div>
     """, unsafe_allow_html=True)
+    
+    # Main chat container
+    st.markdown('<div class="chat-container">', unsafe_allow_html=True)
     
     # Initialize session state
     if 'chatbot' not in st.session_state:
         try:
             st.session_state.chatbot = Chatbot()
         except Exception as e:
-            st.error(f"🚫 Failed to initialize chatbot: {str(e)}")
-            st.info("💡 Please check your API key configuration and try again.")
+            st.error(f"❌ Failed to initialize chatbot: {str(e)}")
+            st.info("💡 Please check your API key configuration.")
             st.stop()
     
     if 'messages' not in st.session_state:
@@ -536,20 +540,19 @@ def main():
     
     # Welcome screen for empty chat
     if not st.session_state.messages:
-        st.markdown("""
+        rag_status = "✅ RAG Data Loaded" if rag_data else "⚠️ Only AI Mode"
+        st.markdown(f"""
         <div class="welcome-container">
             <div class="welcome-title">👋 Welcome!</div>
             <div class="welcome-subtitle">
-                I'm your AI assistant, ready to help with questions, creative tasks, coding, and more.<br>
-                Start a conversation by typing your message below.
+                I'm your AI assistant with RAG capabilities. I can answer from my knowledge base or use AI.<br>
+                Status: {rag_status} | Start a conversation by typing below.
             </div>
         </div>
         """, unsafe_allow_html=True)
     
     try:
-        # Display chat messages in container
-        st.markdown('<div class="messages-container">', unsafe_allow_html=True)
-        
+        # Display chat messages
         for message in st.session_state.messages:
             if message["role"] == "user":
                 with st.chat_message("user", avatar="👤"):
@@ -558,8 +561,6 @@ def main():
                 with st.chat_message("assistant", avatar="🤖"):
                     st.markdown(message["content"])
         
-        st.markdown('</div>', unsafe_allow_html=True)
-        
         # Chat input
         if prompt := st.chat_input("Type your message here...", key="chat_input"):
             # Display user message
@@ -567,11 +568,34 @@ def main():
                 st.markdown(prompt)
             st.session_state.messages.append({"role": "user", "content": prompt})
             
-            # Generate and display assistant response
-            with st.chat_message("assistant", avatar="🤖"):
-                with st.spinner("Thinking..."):
-                    response = st.session_state.chatbot.generate_response(prompt)
-                st.markdown(response)
+            response = ""
+            user_query_clean = prompt.strip().lower()
+
+            # --- Simple RAG Logic - No smart matching ---
+            response = ""
+            
+            # RAG: Just load your data and let Gemini handle everything
+            if rag_data:
+                # Pass RAG data to Gemini for context
+                with st.chat_message("assistant", avatar="🤖"):
+                    with st.spinner("Thinking..."):
+                        # Include RAG data as context for Gemini
+                        enhanced_prompt = f"""
+                        User question: {prompt}
+                        
+                        Available user data: {json.dumps(rag_data, indent=2)}
+                        
+                        Please answer the user's question using the provided data when relevant.
+                        """
+                        response = st.session_state.chatbot.generate_response(enhanced_prompt)
+                    st.markdown(response)
+            else:
+                # No RAG data - just use Gemini
+                with st.chat_message("assistant", avatar="🤖"):
+                    with st.spinner("Thinking..."):
+                        response = st.session_state.chatbot.generate_response(prompt)
+                    st.markdown(response)
+
             st.session_state.messages.append({"role": "assistant", "content": response})
             
             # Auto-scroll to bottom
@@ -581,7 +605,7 @@ def main():
         st.error(f"⚠️ Error: {str(e)}")
         st.info("🔧 Please check your configuration and try again.")
     
-    # Close wrapper
+    # Close container
     st.markdown('</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
