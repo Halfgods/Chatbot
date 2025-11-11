@@ -182,7 +182,7 @@ body, .stApp {
 .stChatInputContainer {
     position: sticky !important;
     bottom: 24px !important;
-    margin: 0 auto 24px auto !important;
+    # margin: 0 auto 24px auto !important;
     z-index: 100 !important;
     max-width: 800px !important;
     width: calc(100% - 48px) !important;
