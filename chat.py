@@ -43,18 +43,16 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Premium Centered Chatbot CSS
+# WhatsApp-Inspired Clean CSS
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-/* Global Reset */
+/* === GLOBAL RESET === */
 * {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     box-sizing: border-box;
 }
 
-/* Hide all Streamlit elements */
+/* Hide Streamlit branding */
 #MainMenu, footer, header, .stDeployButton, .stDecoration, 
 .stToolbar, [data-testid="stToolbar"] {
     visibility: hidden !important;
@@ -62,181 +60,204 @@ st.markdown("""
     display: none !important;
 }
 
-/* Base Light Theme */
-body, .stApp {
-    background: #ffffff !important;
-    color: #111 !important;
+/* === PAGE BACKGROUND === */
+.stApp {
+    background: #0b141a;
 }
 
-/* Chat wrapper */
-.chat-wrapper {
-    max-width: 800px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background: #fff;
-}
-
-/* Header */
-.chat-header {
-    background: #f9f9f9;
-    border-bottom: 1px solid #e5e5e5;
-    padding: 28px 24px;
+/* === HEADER SECTION === */
+.app-header {
+    background: #202c33;
+    padding: 16px 24px;
     text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    border-radius: 20px;
-    margin: 20px auto;
-    max-width: 820px;
-}
-.chat-title {
-    font-size: 30px;
-    font-weight: 700;
-    background: linear-gradient(135deg, #007aff, #00c6ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-.chat-subtitle {
-    color: #777;
-    font-size: 15px;
-    margin-top: 6px;
+    border-bottom: 1px solid #2a3942;
+    margin-bottom: 0;
 }
 
-/* Messages */
+.app-title {
+    font-size: 20px;
+    font-weight: 500;
+    color: #e9edef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.app-subtitle {
+    color: #8696a0;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+/* === MESSAGES AREA === */
 .messages-container {
     flex: 1;
-    padding: 24px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 8px;
     overflow-y: auto;
-    max-width: 800px;
-    margin: 0 auto;
+    max-width: 100%;
+    background: #0b141a;
 }
 
-/* Message Bubbles */
+/* === MESSAGE BUBBLES === */
+[data-testid="stChatMessage"] {
+    background: transparent !important;
+    padding: 2px 0 !important;
+}
+
 [data-testid="stChatMessage"] > div {
-    border-radius: 20px !important;
-    padding: 14px 18px !important;
-    font-size: 16px !important;
-    line-height: 1.5 !important;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    border-radius: 7.5px !important;
+    padding: 8px 12px !important;
+    max-width: 65% !important;
+    font-size: 14.2px !important;
+    line-height: 19px !important;
+    box-shadow: 0 1px 0.5px rgba(0,0,0,0.13) !important;
+    word-wrap: break-word;
 }
 
-/* User bubble (Right side - Blue) */
+/* User message bubble (right side - green) */
 [data-testid="stChatMessage"][data-testid*="user"] {
     justify-content: flex-end !important;
 }
+
 [data-testid="stChatMessage"][data-testid*="user"] > div {
-    background: #007aff !important;
-    color: #fff !important;
-    border-radius: 20px 20px 4px 20px !important;
-    box-shadow: 0 2px 8px rgba(0,122,255,0.2);
-}
-[data-testid="stChatMessage"][data-testid*="user"] > div:hover {
-    transform: scale(1.02);
+    background: #005c4b !important;
+    color: #e9edef !important;
+    border-radius: 7.5px 7.5px 0 7.5px !important;
+    margin-left: auto;
 }
 
-/* Assistant bubble (Left side - Light Gray) */
+/* Assistant message bubble (left side - dark gray) */
 [data-testid="stChatMessage"]:not([data-testid*="user"]) {
     justify-content: flex-start !important;
 }
+
 [data-testid="stChatMessage"]:not([data-testid*="user"]) > div {
-    background: #f2f2f7 !important;
-    color: #111 !important;
-    border-radius: 20px 20px 20px 4px !important;
-    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    background: #202c33 !important;
+    color: #e9edef !important;
+    border-radius: 7.5px 7.5px 7.5px 0 !important;
+    margin-right: auto;
 }
 
-/* Avatars */
+/* === AVATAR STYLING === */
 [data-testid="stChatMessage"] img {
-    width: 36px !important;
-    height: 36px !important;
+    width: 32px !important;
+    height: 32px !important;
     border-radius: 50% !important;
-    margin: 0 12px 4px 0 !important;
+    margin: 0 8px 0 0 !important;
 }
 
-/* Input Box */
+/* === INPUT AREA === */
 .stChatInputContainer {
     position: sticky !important;
-    bottom: 20px !important;
-    max-width: 800px !important;
-    margin: 0 auto;
-    width: calc(100% - 40px) !important;
-    z-index: 10;
+    bottom: 0 !important;
+    padding: 10px 16px !important;
+    background: #202c33 !important;
+    border-top: 1px solid #2a3942;
+    z-index: 100 !important;
 }
+
 .stChatInputContainer > div {
-    background: #f2f2f7 !important;
-    border-radius: 28px !important;
-    padding: 6px !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    background: #2a3942 !important;
+    border-radius: 21px !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
 }
+
+/* Input text field */
 .stChatInputContainer textarea {
     background: transparent !important;
-    color: #111 !important;
-    font-size: 16px !important;
-    padding: 14px 22px !important;
-    border-radius: 20px !important;
+    color: #e9edef !important;
+    font-size: 15px !important;
+    padding: 10px 16px !important;
+    border: none !important;
+    border-radius: 21px !important;
 }
+
+.stChatInputContainer textarea::placeholder {
+    color: #8696a0 !important;
+}
+
+/* Send button */
 [data-testid="stChatInputSubmitButton"] {
+    background: #00a884 !important;
     border-radius: 50% !important;
-    width: 46px !important;
-    height: 46px !important;
-    background: linear-gradient(135deg, #007aff, #00b4ff) !important;
-    box-shadow: 0 4px 12px rgba(0,122,255,0.25);
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    box-shadow: none !important;
+    border: none !important;
 }
+
 [data-testid="stChatInputSubmitButton"]:hover {
-    transform: scale(1.05);
+    background: #06cf9c !important;
 }
 
-/* Scrollbar */
+/* === SCROLLBAR === */
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
 }
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
 ::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 8px;
+    background: #374248;
+    border-radius: 3px;
 }
 
-/* Code block */
+::-webkit-scrollbar-thumb:hover {
+    background: #445258;
+}
+
+/* === CODE BLOCKS === */
 pre {
-    background: #f7f7f7 !important;
-    color: #111 !important;
-    border-radius: 10px !important;
+    background: #182229 !important;
+    border-radius: 5px !important;
     padding: 12px !important;
-    overflow-x: auto;
+    border-left: 3px solid #00a884 !important;
 }
 
-/* Welcome Container */
+code {
+    background: #182229 !important;
+    padding: 2px 6px !important;
+    border-radius: 3px !important;
+    color: #06cf9c !important;
+}
+
+/* === WELCOME SCREEN === */
 .welcome-container {
     text-align: center;
     padding: 60px 20px;
-    color: #333;
+    color: #8696a0;
 }
+
 .welcome-title {
-    font-size: 28px;
-    font-weight: 600;
-    color: #007aff;
+    font-size: 24px;
+    color: #e9edef;
+    margin-bottom: 12px;
 }
+
 .welcome-subtitle {
-    font-size: 16px;
-    color: #666;
-    margin-top: 8px;
+    font-size: 14px;
+    line-height: 1.6;
 }
 
-/* Animations */
-[data-testid="stChatMessage"] > div {
-    animation: fadeIn 0.3s ease;
-}
-@keyframes fadeIn {
-    from {opacity: 0; transform: translateY(6px);}
-    to {opacity: 1; transform: translateY(0);}
-}
-
-/* Mobile Responsive */
-@media (max-width: 768px){
-    .chat-title {font-size: 24px;}
-    [data-testid="stChatMessage"] > div {font-size: 15px;}
+/* === MOBILE RESPONSIVE === */
+@media (max-width: 768px) {
+    [data-testid="stChatMessage"] > div {
+        max-width: 80% !important;
+        font-size: 13.5px !important;
+    }
+    
+    .app-title {
+        font-size: 18px;
+    }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -270,16 +291,13 @@ def main():
     
     # Header
     st.markdown("""
-    <div class="chat-header">
-        <div class="chat-title">
+    <div class="app-header">
+        <div class="app-title">
             🤖 AI Chat Assistant
         </div>
-        <div class="chat-subtitle">Powered by Gemini AI + RAG • Ask me anything</div>
+        <div class="app-subtitle">Powered by Gemini AI + RAG</div>
     </div>
     """, unsafe_allow_html=True)
-    
-    # Main chat container
-    st.markdown('<div class="chat-container">', unsafe_allow_html=True)
     
     # Initialize session state
     if 'chatbot' not in st.session_state:
@@ -300,8 +318,9 @@ def main():
         <div class="welcome-container">
             <div class="welcome-title">👋 Welcome!</div>
             <div class="welcome-subtitle">
-                I'm your AI assistant with RAG capabilities. I can answer from my knowledge base or use AI.<br>
-                Status: {rag_status} | Start a conversation by typing below.
+                I'm your AI assistant with RAG capabilities.<br>
+                Status: {rag_status}<br>
+                Start chatting by typing below.
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -317,7 +336,7 @@ def main():
                     st.markdown(message["content"])
         
         # Chat input
-        if prompt := st.chat_input("Type your message here...", key="chat_input"):
+        if prompt := st.chat_input("Type a message", key="chat_input"):
             # Display user message
             with st.chat_message("user", avatar="👤"):
                 st.markdown(prompt)
@@ -359,9 +378,6 @@ def main():
     except Exception as e:
         st.error(f"⚠️ Error: {str(e)}")
         st.info("🔧 Please check your configuration and try again.")
-    
-    # Close container
-    st.markdown('</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
