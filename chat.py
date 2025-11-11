@@ -187,6 +187,8 @@ body, .stApp {
     max-width: 800px !important;
     width: calc(100% - 48px) !important;
     display: flex;
+    align-item:center;
+    background-color: red;
     gap: 12px;
 }
 .stChatInputContainer > div {
