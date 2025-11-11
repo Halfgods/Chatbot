@@ -96,7 +96,7 @@ body, .stApp {
     text-align: center;
     backdrop-filter: blur(20px);
     box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
-    border-radius: 0 0 24px 24px;
+    border-radius: 25px;
     margin-bottom: 16px;
 }
 
