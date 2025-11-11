@@ -65,6 +65,10 @@ st.markdown("""
     background: #0b141a;
 }
 
+div.block-container{
+    padding: 15px !important; 
+}
+
 /* === HEADER SECTION === */
 .app-header {
     background: #202c33;
