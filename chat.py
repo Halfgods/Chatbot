@@ -43,7 +43,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# WhatsApp-Inspired Clean CSS
+# Modern Light Mode Chat UI
 st.markdown("""
 <style>
 /* === GLOBAL RESET === */
@@ -62,26 +62,23 @@ st.markdown("""
 
 /* === PAGE BACKGROUND === */
 .stApp {
-    background: #0b141a;
-}
-
-div.block-container{
-    padding: 15px !important; 
+    background: #f5f7fa;
 }
 
 /* === HEADER SECTION === */
 .app-header {
-    background: #202c33;
+    background: #ffffff;
     padding: 16px 24px;
     text-align: center;
-    border-bottom: 1px solid #2a3942;
+    border-bottom: 1px solid #e5e7eb;
     margin-bottom: 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .app-title {
     font-size: 20px;
-    font-weight: 500;
-    color: #e9edef;
+    font-weight: 600;
+    color: #1f2937;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -89,7 +86,7 @@ div.block-container{
 }
 
 .app-subtitle {
-    color: #8696a0;
+    color: #6b7280;
     font-size: 13px;
     margin-top: 4px;
 }
@@ -97,53 +94,54 @@ div.block-container{
 /* === MESSAGES AREA === */
 .messages-container {
     flex: 1;
-    padding: 16px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 16px;
     overflow-y: auto;
     max-width: 100%;
-    background: #0b141a;
+    background: #f5f7fa;
 }
 
 /* === MESSAGE BUBBLES === */
 [data-testid="stChatMessage"] {
     background: transparent !important;
-    padding: 2px 0 !important;
+    padding: 4px 0 !important;
 }
 
 [data-testid="stChatMessage"] > div {
-    border-radius: 7.5px !important;
-    padding: 8px 12px !important;
+    border-radius: 18px !important;
+    padding: 12px 16px !important;
     max-width: 65% !important;
-    font-size: 14.2px !important;
-    line-height: 19px !important;
-    box-shadow: 0 1px 0.5px rgba(0,0,0,0.13) !important;
+    font-size: 15px !important;
+    line-height: 1.5 !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08) !important;
     word-wrap: break-word;
 }
 
-/* User message bubble (right side - green) */
+/* User message bubble (right side - blue) */
 [data-testid="stChatMessage"][data-testid*="user"] {
     justify-content: flex-end !important;
 }
 
 [data-testid="stChatMessage"][data-testid*="user"] > div {
-    background: #005c4b !important;
-    color: #e9edef !important;
-    border-radius: 7.5px 7.5px 0 7.5px !important;
+    background: #3b82f6 !important;
+    color: #ffffff !important;
+    border-radius: 18px 18px 4px 18px !important;
     margin-left: auto;
 }
 
-/* Assistant message bubble (left side - dark gray) */
+/* Assistant message bubble (left side - white/gray) */
 [data-testid="stChatMessage"]:not([data-testid*="user"]) {
     justify-content: flex-start !important;
 }
 
 [data-testid="stChatMessage"]:not([data-testid*="user"]) > div {
-    background: #202c33 !important;
-    color: #e9edef !important;
-    border-radius: 7.5px 7.5px 7.5px 0 !important;
+    background: #ffffff !important;
+    color: #1f2937 !important;
+    border-radius: 18px 18px 18px 4px !important;
     margin-right: auto;
+    border: 1px solid #e5e7eb !important;
 }
 
 /* === AVATAR STYLING === */
@@ -158,52 +156,52 @@ div.block-container{
 .stChatInputContainer {
     position: sticky !important;
     bottom: 0 !important;
-    padding: 10px 16px !important;
-    background: #202c33 !important;
-    border-top: 1px solid #2a3942;
+    padding: 16px 20px !important;
+    background: #ffffff !important;
+    border-top: 1px solid #e5e7eb;
     z-index: 100 !important;
 }
 
 .stChatInputContainer > div {
-    background: #2a3942 !important;
-    border-radius: 21px !important;
+    background: #f3f4f6 !important;
+    border-radius: 24px !important;
     padding: 0 !important;
     box-shadow: none !important;
-    border: none !important;
+    border: 1px solid #e5e7eb !important;
 }
 
 /* Input text field */
 .stChatInputContainer textarea {
     background: transparent !important;
-    color: #e9edef !important;
+    color: #1f2937 !important;
     font-size: 15px !important;
-    padding: 10px 16px !important;
+    padding: 12px 16px !important;
     border: none !important;
-    border-radius: 21px !important;
+    border-radius: 24px !important;
 }
 
 .stChatInputContainer textarea::placeholder {
-    color: #8696a0 !important;
+    color: #9ca3af !important;
 }
 
 /* Send button */
 [data-testid="stChatInputSubmitButton"] {
-    background: #00a884 !important;
+    background: #3b82f6 !important;
     border-radius: 50% !important;
-    width: 42px !important;
-    height: 42px !important;
-    min-width: 42px !important;
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
     box-shadow: none !important;
     border: none !important;
 }
 
 [data-testid="stChatInputSubmitButton"]:hover {
-    background: #06cf9c !important;
+    background: #2563eb !important;
 }
 
 /* === SCROLLBAR === */
 ::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -211,45 +209,47 @@ div.block-container{
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #374248;
-    border-radius: 3px;
+    background: #d1d5db;
+    border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #445258;
+    background: #9ca3af;
 }
 
 /* === CODE BLOCKS === */
 pre {
-    background: #182229 !important;
-    border-radius: 5px !important;
+    background: #f3f4f6 !important;
+    border-radius: 8px !important;
     padding: 12px !important;
-    border-left: 3px solid #00a884 !important;
+    border-left: 3px solid #3b82f6 !important;
 }
 
 code {
-    background: #182229 !important;
+    background: #f3f4f6 !important;
     padding: 2px 6px !important;
-    border-radius: 3px !important;
-    color: #06cf9c !important;
+    border-radius: 4px !important;
+    color: #3b82f6 !important;
 }
 
 /* === WELCOME SCREEN === */
 .welcome-container {
     text-align: center;
     padding: 60px 20px;
-    color: #8696a0;
+    color: #6b7280;
 }
 
 .welcome-title {
     font-size: 24px;
-    color: #e9edef;
+    color: #1f2937;
     margin-bottom: 12px;
+    font-weight: 600;
 }
 
 .welcome-subtitle {
     font-size: 14px;
     line-height: 1.6;
+    color: #6b7280;
 }
 
 /* === MOBILE RESPONSIVE === */
