@@ -63,8 +63,9 @@ st.markdown("""
 }
 
 /* Root styling - Dark elegance */
-.stApp {
+body, .stApp {
     background: #fff ;
+    color: #000
 }
 
 /* Main wrapper */
